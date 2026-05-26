@@ -1,1 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>ReEntryCompass | Reentry Program Dashboard</title>
+  <meta name="description" content="ReEntryCompass helps reentry organizations track participants, coordinate referrals, document progress, and export clear reporting." />
+
+  <style>
+    :root {
+      --cream: #f8f1e4;
+      --cream2: #efe3cf;
+      --ink: #123226;
+      --navy: #0e2847;
+      --muted: #66788a;
+      --white: #ffffff;
+      --orange: #c94f12;
+      --orangeDark: #9f3705;
+      --green: #2f6b3f;
+      --blue: #1f5d9f;
+      --purple: #5945a8;
+      --gold: #c68a10;
+      --border: #d8d5cc;
+      --shadow: 0 24px 70px rgba(20, 36, 48, 0.14);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 241, 228, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(216, 213, 204, 0.8);
+    }
+
+    .navInner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.45rem;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .brandIcon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      color: var(--orange);
+      font-size: 1.15rem;
+      background: #fffaf1;
+    }
+
+    .brand span span {
+      color: var(--orange);
+    }
+
+    .navLinks {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #17291f;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 24px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .buttonPrimary {
+      background: var(--orange);
+      color: var(--white);
+      box-shadow: 0 14px 30px rgba(201, 79, 18, 0.24);
+    }
+
+    .buttonPrimary:hover {
+      background: var(--orangeDark);
+      transform: translateY(-1px);
+    }
+
+    .buttonText {
+      color: var(--ink);
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero {
+      padding: 72px 28px 40px;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(201, 79, 18, 0.12), transparent 34%),
+        linear-gradient(180deg, var(--cream) 0%, #fffaf2 100%);
+    }
+
+    .heroInner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 58px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0 0 24px;
+      font-family: Georgia, serif;
+      font-size: clamp(3.1rem, 6vw, 6rem);
+      line-height: 0.92;
+      letter-spacing: -0.07em;
+      color: var(--ink);
+    }
+
+    .heroText {
+      color: #152d22;
+      max-width: 560px;
+      font-size: 1.04rem;
+      margin-bottom: 18px;
+    }
+
+    .heroText strong {
+      color: var(--ink);
+    }
+
+    .heroActions {
+      margin-top: 34px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .heroMini {
+      margin-top: 32px;
+      display: flex;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .miniItem {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 900;
+      color: var(--ink);
+      font-size: 0.88rem;
+    }
+
+    .miniIcon {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-size: 1.15rem;
+    }
+
+    .dashboardWrap {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(216, 213, 204, 0.9);
+    }
+
+    .dashboardImg {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .quickWins {
+      padding: 32px 28px;
+      background: #fff9ee;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .quickGrid {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .quickCard {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 16px;
+      padding: 0 18px;
+      border-right: 1px solid var(--border);
+    }
+
+    .quickCard:last-child {
+      border-right: 0;
+    }
+
+    .roundIcon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid currentColor;
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .iconOrange {
+      color: var(--orange);
+    }
+
+    .iconGreen {
+      color: var(--green);
+    }
+
+    .iconGold {
+      color: var(--gold);
+    }
+
+    .quickCard h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      color: var(--ink);
+    }
+
+    .quickCard p {
+      margin: 0;
+      color: #1d2c24;
+      font-size: 0.95rem;
+    }
+
+    .section {
+      padding: 76px 28px;
+      background: var(--white);
+    }
+
+    .sectionAlt {
+      background: #fffaf2;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .sectionHead {
+      text-align: center;
+      max-width: 830px;
+      margin: 0 auto 40px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-family: Georgia, serif;
+      color: #15231b;
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .accentLine {
+      width: 42px;
+      height: 3px;
+      background: var(--orange);
+      margin: 0 auto 18px;
+      border-radius: 10px;
+    }
+
+    .sectionHead p {
+      margin: 0;
+      color: #26362c;
+      font-size: 1.02rem;
+    }
+
+    .cardsThree {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .softCard {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      background: linear-gradient(145deg, #fff8ed, #ffffff);
+      box-shadow: 0 18px 45px rgba(18, 50, 38, 0.06);
+    }
+
+    .softCard.greenTint {
+      background: linear-gradient(145deg, #f5fbf5, #ffffff);
+    }
+
+    .softCard.blueTint {
+      background: linear-gradient(145deg, #f4f9ff, #ffffff);
+    }
+
+    .softCard.purpleTint {
+      background: linear-gradient(145deg, #f7f5ff, #ffffff);
+    }
+
+    .softIcon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      font-size: 2rem;
+      background: rgba(201, 79, 18, 0.1);
+      color: var(--orange);
+    }
+
+    .softIcon.green {
+      background: rgba(47, 107, 63, 0.11);
+      color: var(--green);
+    }
+
+    .softIcon.blue {
+      background: rgba(31, 93, 159, 0.11);
+      color: var(--blue);
+    }
+
+    .softIcon.purple {
+      background: rgba(89, 69, 168, 0.11);
+      color: var(--purple);
+    }
+
+    .softCard h3 {
+      color: var(--orange);
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+    }
+
+    .softCard.greenTitle h3 {
+      color: var(--green);
+    }
+
+    .softCard.blueTitle h3 {
+      color: var(--blue);
+    }
+
+    .softCard.purpleTitle h3 {
+      color: var(--purple);
+    }
+
+    .subhead {
+      font-weight: 900;
+      color: #142a20;
+      margin-bottom: 14px;
+    }
+
+    .softCard p {
+      color: #24342b;
+      margin: 0 0 18px;
+      font-size: 0.98rem;
+    }
+
+    .iconList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .iconList li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 11px 0;
+      color: #1c2d24;
+      font-size: 0.95rem;
+    }
+
+    .check {
+      color: var(--green);
+      font-weight: 950;
+    }
+
+    .dotOrange {
+      color: var(--orange);
+      font-weight: 950;
+    }
+
+    .dotBlue {
+      color: var(--blue);
+      font-weight: 950;
+    }
+
+    .dotPurple {
+      color: var(--purple);
+      font-weight: 950;
+    }
+
+    .plainGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 34px;
+      align-items: start;
+    }
+
+    .plainItem {
+      padding: 20px 18px;
+      border-right: 1px solid var(--border);
+    }
+
+    .plainItem:last-child {
+      border-right: 0;
+    }
+
+    .plainItem h3 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 1.18rem;
+    }
+
+    .plainItem .subhead {
+      color: #1b2f25;
+      font-size: 0.95rem;
+    }
+
+    .pilotGrid {
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr 70px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .arrow {
+      text-align: center;
+      font-size: 2rem;
+      color: #978d7e;
+      letter-spacing: 4px;
+    }
+
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.72);
+      padding: 28px;
+    }
+
+    .footerInner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .heroInner,
+      .quickGrid,
+      .cardsThree,
+      .plainGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .navLinks a:not(.button) {
+        display: none;
+      }
+
+      .quickCard,
+      .plainItem {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 24px;
+      }
+
+      .quickCard:last-child,
+      .plainItem:last-child {
+        border-bottom: 0;
+      }
+
+      .pilotGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .navInner {
+        padding: 18px;
+      }
+
+      .hero,
+      .section,
+      .quickWins {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .brand {
+        font-size: 1.18rem;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .heroActions {
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="navInner">
+      <a href="/" class="brand">
+        <span class="brandIcon">✦</span>
+        <span>ReEntry<span>Compass</span></span>
+      </a>
+
+      <div class="navLinks">
+        <a href="#features">Features</a>
+        <a href="#pilot">Pilot Program</a>
+        <a href="#serve">Who We Serve</a>
+        <a href="#leaders">For Leaders</a>
+        <a href="mailto:info@reentrycompass.com" class="button buttonPrimary">Request Pilot</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="heroInner">
+      <div>
+        <h1>Stop losing time to chaos</h1>
+
+        <p class="heroText">
+          If your reentry program lives in spreadsheets, inboxes, and side notes, you already know the truth.
+          The work is real. The tracking is messy. The reporting steals time you do not have.
+        </p>
+
+        <p class="heroText">
+          ReEntryCompass gives agencies one place to track participants, coordinate referrals,
+          document progress, and export reporting that makes sense.
+        </p>
+
+        <div class="heroMini">
+          <div class="miniItem">
+            <span class="miniIcon">▣</span>
+            <span>One system</span>
+          </div>
+          <div class="miniItem">
+            <span class="miniIcon">♙</span>
+            <span>One record</span>
+          </div>
+          <div class="miniItem">
+            <span class="miniIcon">⌁</span>
+            <span>One reporting path</span>
+          </div>
+        </div>
+
+        <div class="heroActions">
+          <a class="button buttonPrimary" href="mailto:info@reentrycompass.com">Request a Pilot</a>
+          <a class="buttonText" href="#features">See how it works →</a>
+        </div>
+      </div>
+
+      <div class="dashboardWrap">
+        <img
+          src="/assets/organizationdashboard.png"
+          alt="Employment Outcomes Dashboard showing client pipeline, applications, interviews, placement rate, and retention follow ups"
+          class="dashboardImg"
+        />
+      </div>
+    </div>
+  </header>
+
+  <section class="quickWins">
+    <div class="quickGrid">
+      <div class="quickCard">
+        <div class="roundIcon iconOrange">×</div>
+        <div>
+          <h3>What you stop doing</h3>
+          <p>Chasing emails for updates. Rebuilding reports from scratch. Guessing what happened last week. Digging for missing documents.</p>
+        </div>
+      </div>
+
+      <div class="quickCard">
+        <div class="roundIcon iconGreen">✓</div>
+        <div>
+          <h3>What you start doing</h3>
+          <p>Tracking progress as it happens. Coordinating referrals clearly. Producing updates fast. Reviewing cases with confidence.</p>
+        </div>
+      </div>
+
+      <div class="quickCard">
+        <div class="roundIcon iconGold">☆</div>
+        <div>
+          <h3>What you gain</h3>
+          <p>Better visibility for staff. Cleaner oversight for leaders. Fewer surprises when reporting is due.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="problem">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>Here is the problem no one says out loud</h2>
+        <div class="accentLine"></div>
+        <p>
+          You can run a good program and still look disorganized on paper.
+          Not because your staff does not care. Because your tools do not match the work.
+        </p>
+      </div>
+
+      <div class="cardsThree">
+        <div class="softCard">
+          <div class="softIcon">◎</div>
+          <h3>Chaos</h3>
+          <div class="subhead">Information scatters</div>
+          <p>Notes sit in email threads, spreadsheets, and private documents. No one has the full picture.</p>
+          <ul class="iconList">
+            <li><span class="dotOrange">●</span><span>Staff track work differently</span></li>
+            <li><span class="dotOrange">●</span><span>Updates come late or not at all</span></li>
+            <li><span class="dotOrange">●</span><span>Documents go missing</span></li>
+          </ul>
+        </div>
+
+        <div class="softCard">
+          <div class="softIcon">◷</div>
+          <h3>Pressure</h3>
+          <div class="subhead">Reporting becomes a scramble</div>
+          <p>When leadership asks for outcomes, the team spends days assembling basic answers.</p>
+          <ul class="iconList">
+            <li><span class="dotOrange">●</span><span>Manual counting</span></li>
+            <li><span class="dotOrange">●</span><span>Conflicting numbers</span></li>
+            <li><span class="dotOrange">●</span><span>Last minute corrections</span></li>
+          </ul>
+        </div>
+
+        <div class="softCard greenTint greenTitle">
+          <div class="softIcon green">↘</div>
+          <h3>Drift</h3>
+          <div class="subhead">Follow up slips</div>
+          <p>Without a shared system, important steps get delayed and coordination breaks down.</p>
+          <ul class="iconList">
+            <li><span class="check">●</span><span>Referrals stall</span></li>
+            <li><span class="check">●</span><span>Tasks get forgotten</span></li>
+            <li><span class="check">●</span><span>Status becomes unclear</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sectionAlt" id="features">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>ReEntryCompass turns the mess into a system</h2>
+        <div class="accentLine"></div>
+        <p>
+          The goal is simple. Capture the work once. Keep the record clean. Make reporting easy.
+          ReEntryCompass helps agencies track, coordinate, document, and report without rebuilding everything every week.
+        </p>
+      </div>
+
+      <div class="cardsThree">
+        <div class="softCard blueTint blueTitle">
+          <div class="softIcon blue">▣</div>
+          <h3>Track</h3>
+          <div class="subhead">One participant record</div>
+          <p>Centralize intake, milestones, notes, and documents so staff can see the story fast.</p>
+          <ul class="iconList">
+            <li><span class="dotBlue">●</span><span>Structured intake</span></li>
+            <li><span class="dotBlue">●</span><span>Milestones and status</span></li>
+            <li><span class="dotBlue">●</span><span>Documents in one place</span></li>
+          </ul>
+        </div>
+
+        <div class="softCard greenTint greenTitle">
+          <div class="softIcon green">♢</div>
+          <h3>Coordinate</h3>
+          <div class="subhead">Clear referral workflow</div>
+          <p>Track referral requests and status so providers and staff stay aligned.</p>
+          <ul class="iconList">
+            <li><span class="check">●</span><span>Referral requests</span></li>
+            <li><span class="check">●</span><span>Status updates</span></li>
+            <li><span class="check">●</span><span>Provider lists</span></li>
+          </ul>
+        </div>
+
+        <div class="softCard purpleTint purpleTitle">
+          <div class="softIcon purple">▤</div>
+          <h3>Report</h3>
+          <div class="subhead">Exports you can use</div>
+          <p>Produce program summaries for leadership and funding updates without panic.</p>
+          <ul class="iconList">
+            <li><span class="dotPurple">●</span><span>Participation summaries</span></li>
+            <li><span class="dotPurple">●</span><span>Outcome snapshots</span></li>
+            <li><span class="dotPurple">●</span><span>Export friendly outputs</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="leaders">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>What you get in plain terms</h2>
+        <div class="accentLine"></div>
+        <p>
+          No predictions. No magic. Just a practical way to manage reentry work with consistent indicators and staff flags for follow up.
+        </p>
+      </div>
+
+      <div class="plainGrid">
+        <div class="plainItem">
+          <div class="softIcon blue">♜</div>
+          <h3>Consistency</h3>
+          <div class="subhead">Standard workflow</div>
+          <p>Help every staff member track the same core information the same way.</p>
+          <ul class="iconList">
+            <li><span class="dotBlue">●</span><span>Shared fields</span></li>
+            <li><span class="dotBlue">●</span><span>Repeatable steps</span></li>
+            <li><span class="dotBlue">●</span><span>Cleaner records</span></li>
+          </ul>
+        </div>
+
+        <div class="plainItem">
+          <div class="softIcon green">⚑</div>
+          <h3>Visibility</h3>
+          <div class="subhead">Indicators and flags</div>
+          <p>Mark needs and follow up prompts so teams act faster and stay coordinated.</p>
+          <ul class="iconList">
+            <li><span class="check">●</span><span>Needs indicators</span></li>
+            <li><span class="check">●</span><span>Progress indicators</span></li>
+            <li><span class="check">●</span><span>Staff flags for follow up</span></li>
+          </ul>
+        </div>
+
+        <div class="plainItem">
+          <div class="softIcon purple">♚</div>
+          <h3>Oversight</h3>
+          <div class="subhead">Leadership ready view</div>
+          <p>Give leaders a clear picture without digging through notes.</p>
+          <ul class="iconList">
+            <li><span class="dotPurple">●</span><span>Program level summaries</span></li>
+            <li><span class="dotPurple">●</span><span>Cohort views</span></li>
+            <li><span class="dotPurple">●</span><span>Exportable updates</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sectionAlt" id="pilot">
+    <div class="container">
+      <div class="sectionHead">
+        <h2>A pilot structure that feels safe</h2>
+        <div class="accentLine"></div>
+        <p>
+          Start with one program team. Keep the scope tight. Measure what improves. Then decide what to scale.
+        </p>
+      </div>
+
+      <div class="pilotGrid">
+        <div class="softCard blueTint blueTitle">
+          <div class="softIcon blue">♙</div>
+          <h3>Scope</h3>
+          <div class="subhead">One team</div>
+          <p>Pick a unit or program. Define a cohort. Define reporting needs.</p>
+          <ul class="iconList">
+            <li><span class="dotBlue">●</span><span>Clear use case</span></li>
+            <li><span class="dotBlue">●</span><span>Defined cohort</span></li>
+            <li><span class="dotBlue">●</span><span>Defined outputs</span></li>
+          </ul>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="softCard greenTint greenTitle">
+          <div class="softIcon green">▦</div>
+          <h3>Timeline</h3>
+          <div class="subhead">Sixty to ninety days</div>
+          <p>Fast enough to move. Long enough to learn.</p>
+          <ul class="iconList">
+            <li><span class="check">●</span><span>Setup and onboarding</span></li>
+            <li><span class="check">●</span><span>Weekly check ins</span></li>
+            <li><span class="check">●</span><span>End review</span></li>
+          </ul>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="softCard purpleTint purpleTitle">
+          <div class="softIcon purple">▥</div>
+          <h3>Outcome</h3>
+          <div class="subhead">Clear before and after</div>
+          <p>Finish with a report leadership can use and a plan for expansion.</p>
+          <ul class="iconList">
+            <li><span class="dotPurple">●</span><span>Participation summary</span></li>
+            <li><span class="dotPurple">●</span><span>Workflow improvements</span></li>
+            <li><span class="dotPurple">●</span><span>Scale recommendations</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:44px;">
+        <a href="mailto:info@reentrycompass.com" class="button buttonPrimary">Request Pilot</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footerInner">
+      <div>© 2026 ReEntryCompass. All rights reserved.</div>
+      <div>
+        <a href="/terms.html">Terms</a>
+        <span> · </span>
+        <a href="/privacy.html">Privacy</a>
+        <span> · </span>
+        <a href="mailto:info@reentrycompass.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
